@@ -1,0 +1,1 @@
+print('Yes' if (lambda m, n: m % 3 == 0 and n % 3 == 0 or m % 3 == 0 and n % 2 == 0 or m % 2 == 0 and n % 3 == 0)(*map(int, input().split())) else 'No')
