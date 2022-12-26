@@ -1,0 +1,1 @@
+x=[p for p in range(*map(int,input().split()))if(lambda n:not any(n%i==0 for i in range(2,int(n**0.5)+1)))(p)];[print(f"{x[i]} - {x[i+1]} : {x[i+1]-x[i]-1}")for i in range(len(x)-1)]
