@@ -1,0 +1,1 @@
+l=s=>Object.entries([...s.replace(/[^A-Z]/ig,"")].reduce((f,c)=>(f[c]=f[c]?f[c]+1:1,f),{})).sort((a,b)=>b[1]-a[1]).slice(0,5).forEach(([c,f])=>console.log(`${c.toUpperCase()}: ${(f/s.replace(/[^A-Z]/ig,"").length*100).toFixed(1)}%`));
