@@ -1,38 +1,41 @@
-substitution_mapping = {
-    'A': 'N',
-    'B': 'J',
-    'C': 'A',
-    'D': 'B',
-    'E': 'Y',
-    'F': 'O',
-    'G': 'F',
-    'H': 'W',
-    'I': 'L',
-    'J': 'Z',
-    'K': 'M',
-    'L': 'P',
-    'M': 'X',
-    'N': 'I',
-    'O': 'K',
-    'P': 'U',
-    'Q': 'V',
-    'R': 'C',
-    'S': 'D',
-    'T': 'E',
-    'U': 'G',
-    'V': 'R',
-    'W': 'Q',
-    'X': 'S',
-    'Y': 'T',
-    'Z': 'H'
-}
+from collections import Counter
+import random
+import json
 
-def encipher_text(text):
-    def get_substitution(c):
-        upper = c.isupper()
-        substitution = substitution_mapping.get(c.upper(), c)
-        return substitution.upper() if upper else substitution.lower()
-    return "".join(get_substitution(c) for c in text)
+org = "abcdefghijklmnopqrstuvwxyz"
+sub = "".join(random.sample(org, len(org)))
+tbl = str.maketrans(org, sub)
 
+txt = input()
+rep = txt
 
-print(encipher_text(input()))
+upper_index = set()
+for i in range(len(txt)):
+    if txt[i].isupper():
+        upper_index.add(i)
+
+txt = txt.lower()
+enc_txt = txt.translate(tbl)
+enc_list = list(enc_txt)
+for i in upper_index:
+    enc_list[i] = enc_list[i].upper()
+
+x = "".join(enc_list)
+print(x)
+
+#generate key
+def calculate_key(c, p):
+    c_freq = Counter(c)
+    p_freq = Counter(p)
+    k = {}
+    for c_char, c_count in c_freq.items():
+        for p_char, p_count in p_freq.items():
+            if c_count == p_count:
+                k[c_char] = p_char
+                p_freq[p_char] = -1  # Mark as used
+                break
+    return k
+
+#write key to file
+with open('key.json', 'w') as f:
+    json.dump(calculate_key(x, rep), f)
